@@ -1,0 +1,33 @@
+export type Task = {
+  id: string;
+  title: string;
+  link?: string;
+  categoryId?: string;
+  status: 'todo' | 'in-progress' | 'paused' | 'done';
+  startTime?: number; // Unix timestamp for current segment start
+  endTime?: number; // Unix timestamp for current segment end
+  workTime?: number; // Total accumulated work time in minutes
+  createdAt: number; // Unix timestamp
+};
+
+export interface Category {
+  id: string;
+  name: string;
+}
+
+export type AppData = {
+  settings: {
+    theme: 'light' | 'dark';
+    isSettingsModalOpen: boolean;
+    workTimeAdjustingTaskId: string | null;
+    currentDate: string; // YYYY-MM-DD format
+    categories: Category[];
+  };
+  tasks: {
+    today: Task[];
+    tomorrow: Task[];
+  };
+  history: {
+    [date: string]: Task[]; // e.g., '2025-10-03'
+  };
+};

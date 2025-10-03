@@ -1,0 +1,36 @@
+.work-time-prompt-modal {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999 !important; /* さらに高い値に設定 */
+}
+
+.work-time-prompt-content {
+  background-color: var(--color-bg-secondary);
+  padding: 2rem;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  color: var(--color-text);
+}
+
+.work-time-prompt-content input {
+  width: 80px;
+  padding: 0.5em;
+  margin: 1rem 0;
+  border-radius: 4px;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  text-align: center;
+}
+
+.prompt-actions button {
+  margin: 0 0.5rem;
+}
