@@ -62,6 +62,10 @@
     -   アプリ名、セクション表題、タスクタイトル、設定モーダルの表題・説明、分類リストのテキスト色、ヘッダーの日付の文字色を`var(--color-text)`で明示的に指定し、ダークモードでの視認性を向上。
     -   作業時間調整モーダルの背景色を`var(--color-bg-secondary)`に変更し、入力フィールドもテーマに合わせる。
     -   ヘッダーのアイコンをSVGアイコンに変更（スパナ、太陽、月）。
+-   **設定画面の改善:**
+    -   設定画面をタブで分割（「分類」、「データ管理」、「About」）。
+    -   「About」タブにGitHubリンク、Buy me a Coffeeリンク、QRコード画像を追加。
+    -   設定モーダルのサイズを固定（幅: `600px`、高さ: `80vh`）し、内容が溢れる場合は内部スクロールするように変更。
 -   **バグ修正:**
     -   `src/contexts/AppContext.tsx`内の`getInitialState`関数の重複定義を修正。
     -   `tsconfig.app.json`の`verbatimModuleSyntax: true`に対応するため、型インポートを`import type`に修正（`AppContext.tsx`, `TaskItem.tsx`, `TaskList.tsx`, `CategoryManager.tsx`, `DataManager.tsx`）。
@@ -73,5 +77,10 @@
         -   `Task`インターフェースに`listType`プロパティを追加し、`WorkTimeAdjustmentModal`での`UPDATE_TASK`ディスパッチ時に`listType`を正しく渡すように修正。
         -   `ReactNode`と`Dispatch`の`import`を`import type`に修正。
         -   `appReducer`の`TS2366`エラーを、`default`ケースに`as AppData`の型アサーションを追加することで解消。
+
+## 4. デプロイに関する対応
+
+-   Viteの設定ファイル（`vite.config.ts`）に`base: './'`を追加し、生成されるアセットのパスを相対パスに変更。これにより、サブディレクトリへのデプロイ時のアセット読み込みエラーを解消。
+-   QRコード画像（`bmc_qr.png`）は`public`ディレクトリに配置するよう指示。
 
 ---

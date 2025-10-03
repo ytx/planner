@@ -1,6 +1,5 @@
 import { useAppContext } from '../contexts/AppContext';
-import CategoryManager from './CategoryManager';
-import DataManager from './DataManager';
+import SettingsTabs from './SettingsTabs';
 
 const SettingsModal = () => {
   const { state, dispatch } = useAppContext();
@@ -21,14 +20,7 @@ const SettingsModal = () => {
           <button onClick={handleClose} className="close-btn">&times;</button>
         </div>
         <div className="modal-body">
-          <section>
-            <h3>分類の管理</h3>
-            <CategoryManager />
-          </section>
-          <section>
-            <h3>データ管理</h3>
-            <DataManager />
-          </section>
+          <SettingsTabs />
         </div>
       </div>
     </div>
