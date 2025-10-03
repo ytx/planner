@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import type { AppData } from '../types/index.ts';
 

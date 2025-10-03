@@ -68,5 +68,10 @@
     -   作業時間調整モーダルが画面中央に表示されない問題を修正（スタイルをコンポーネント固有のCSSファイルに分離）。
     -   「今日のタスク」へ移動した際に「中断中」の状態が「未着手」になるバグを修正。
     -   設定アイコンのSVGパスをよりスパナらしい形状に変更。
+    -   **ビルドエラー修正:**
+        -   `React`が使用されていない`import`文を修正（`import React from 'react'`を削除または`import type React from 'react'`に変更）。
+        -   `Task`インターフェースに`listType`プロパティを追加し、`WorkTimeAdjustmentModal`での`UPDATE_TASK`ディスパッチ時に`listType`を正しく渡すように修正。
+        -   `ReactNode`と`Dispatch`の`import`を`import type`に修正。
+        -   `appReducer`の`TS2366`エラーを、`default`ケースに`as AppData`の型アサーションを追加することで解消。
 
 ---

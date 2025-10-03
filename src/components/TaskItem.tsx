@@ -67,7 +67,7 @@ const TaskItem = ({ task, listType }: TaskItemProps) => {
       totalWorkTime += segmentDuration;
     }
 
-    dispatch({ type: 'OPEN_WORK_TIME_ADJUSTMENT', payload: { taskId: task.id, initialWorkTime: totalWorkTime } });
+    dispatch({ type: 'OPEN_WORK_TIME_ADJUSTMENT', payload: { taskId: task.id, initialWorkTime: totalWorkTime, listType } });
   };
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {

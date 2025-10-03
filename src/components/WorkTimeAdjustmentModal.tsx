@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import type { Task } from '../types/index.ts';
 import { useAppContext } from '../contexts/AppContext';
 import './WorkTimeAdjustmentModal.css';
@@ -43,7 +43,7 @@ const WorkTimeAdjustmentModal = () => {
       workTime: adjustedWorkTime,
       startTime: undefined, // Clear startTime once done
     };
-    dispatch({ type: 'UPDATE_TASK', payload: { updatedTask, list: currentTask.listType || 'today' } }); // listTypeはTaskItemから渡されるべきだが、ここでは仮にtoday
+    dispatch({ type: 'UPDATE_TASK', payload: { updatedTask, list: state.settings.workTimeAdjustingListType! } });
     dispatch({ type: 'CLOSE_WORK_TIME_ADJUSTMENT' });
   };
 

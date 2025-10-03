@@ -4,6 +4,7 @@ export type Task = {
   link?: string;
   categoryId?: string;
   status: 'todo' | 'in-progress' | 'paused' | 'done';
+  listType?: 'today' | 'tomorrow'; // Add listType to Task interface
   startTime?: number; // Unix timestamp for current segment start
   endTime?: number; // Unix timestamp for current segment end
   workTime?: number; // Total accumulated work time in minutes
@@ -20,6 +21,7 @@ export type AppData = {
     theme: 'light' | 'dark';
     isSettingsModalOpen: boolean;
     workTimeAdjustingTaskId: string | null;
+    workTimeAdjustingListType: 'today' | 'tomorrow' | null;
     currentDate: string; // YYYY-MM-DD format
     categories: Category[];
   };

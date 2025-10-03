@@ -1,4 +1,3 @@
-import React from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import ThemeToggle from './ThemeToggle';
 import SettingsIcon from './icons/SettingsIcon';

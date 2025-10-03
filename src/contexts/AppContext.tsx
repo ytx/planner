@@ -2,10 +2,9 @@ import {
   createContext,
   useReducer,
   useEffect,
-  ReactNode,
-  Dispatch,
   useContext,
 } from 'react';
+import type { ReactNode, Dispatch } from 'react';
 import type { AppData, Task, Category } from '../types/index.ts';
 
 // --- Reducer Actions Definition ---
@@ -23,11 +22,10 @@ type Action =
   | { type: 'IMPORT_DATA'; payload: AppData }
   | { type: 'MOVE_TASK_TO_TODAY'; payload: { taskId: string } }
   | { type: 'MOVE_TASK_TO_TOMORROW'; payload: { taskId: string } }
-  | { type: 'OPEN_WORK_TIME_ADJUSTMENT'; payload: { taskId: string; initialWorkTime: number } }
+  | { type: 'OPEN_WORK_TIME_ADJUSTMENT'; payload: { taskId: string; initialWorkTime: number; listType: 'today' | 'tomorrow' } }
   | { type: 'CLOSE_WORK_TIME_ADJUSTMENT' };
 
 // --- App Reducer ---
-// Note: The full reducer logic will be implemented in subsequent steps.
 const appReducer = (state: AppData, action: Action): AppData => {
   switch (action.type) {
     case 'SET_THEME':
@@ -179,10 +177,11 @@ const appReducer = (state: AppData, action: Action): AppData => {
     case 'CLOSE_SETTINGS_MODAL':
       return { ...state, settings: { ...state.settings, isSettingsModalOpen: false } };
     case 'OPEN_WORK_TIME_ADJUSTMENT':
-      return { ...state, settings: { ...state.settings, workTimeAdjustingTaskId: action.payload.taskId } };
+      return { ...state, settings: { ...state.settings, workTimeAdjustingTaskId: action.payload.taskId, workTimeAdjustingListType: action.payload.listType } };
     case 'CLOSE_WORK_TIME_ADJUSTMENT':
-      return { ...state, settings: { ...state.settings, workTimeAdjustingTaskId: null } };
+      return { ...state, settings: { ...state.settings, workTimeAdjustingTaskId: null, workTimeAdjustingListType: null } };
     default:
+      return state as AppData;
   }
 };
 
@@ -208,6 +207,7 @@ const getInitialState = (): AppData => {
       theme: 'light',
       isSettingsModalOpen: false,
       workTimeAdjustingTaskId: null,
+      workTimeAdjustingListType: null,
       currentDate: getTodayString(),
       categories: [],
     },

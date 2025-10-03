@@ -1,4 +1,3 @@
-import React from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import CategoryManager from './CategoryManager';
 import DataManager from './DataManager';

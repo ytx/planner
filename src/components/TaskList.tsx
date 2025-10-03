@@ -1,5 +1,4 @@
-import React from 'react';
-import type { Task } from '../types';
+import type { Task } from '../types/index.ts';
 import TaskItem from './TaskItem';
 import AddTaskForm from './AddTaskForm';
 
