@@ -19,7 +19,7 @@ const AboutTab = () => {
         </a>
       </p>
       <div className="bmc-qr-code">
-        <img src="/bmc_qr.png" alt="Buy me a Coffee QR Code" style={{ maxWidth: '150px', height: 'auto' }} />
+        <img src={import.meta.env.BASE_URL + 'bmc_qr.png'} alt="Buy me a Coffee QR Code" style={{ maxWidth: '150px', height: 'auto' }} />
       </div>
     </div>
   );
