@@ -1,74 +1,103 @@
-# React + TypeScript + Vite
+# Planner
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 概要
 
-Currently, two official plugins are available:
+Plannerは、日々のタスクを効率的に管理し、計画と実績を記録するためのシンプルなWebアプリケーションです。単一のHTMLファイルで動作し、すべてのデータはブラウザのLocalStorageに保存されます。
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 機能
 
-## React Compiler
+-   **タスク管理:**
+    -   タスクの追加、状態変更（未着手、作業中、中断、完了）、削除。
+    -   タスクへの分類割り当て。
+    -   今日のタスクと明日以降のタスク間での移動。
+-   **日次処理:**
+    -   「日付を進める」機能により、完了タスクを履歴に記録し、未完了タスクを翌日に繰り越します。
+-   **分類管理:**
+    -   ユーザーが自由に分類（カテゴリ）を追加、編集、削除できます。
+-   **テーマ切り替え:**
+    -   ライトモードとダークモードを切り替えることができます。
+-   **データ入出力:**
+    -   すべてのアプリケーションデータをJSON形式でエクスポート・インポートできます。
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 操作説明
 
-## Expanding the ESLint configuration
+### 1. タスクの追加
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+-   「今日のタスク」または「明日以降のタスク」セクションの下にある入力欄にタスク名を入力し、「追加」ボタンをクリックします。
+-   タスク作成時に、分類ドロップダウンから分類を選択することも可能です。
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### 2. タスクの状態変更
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+-   **今日のタスクのみ:**
+    -   タスク名の左側にある**状態アイコン**（例: `ー` 未処理）をクリックすると、以下の順で状態が遷移します。
+        `未着手 (ー)` → `作業中 (◐)` → `中断 (×)` → `作業中 (◐)` ...
+    -   `作業中 (◐)`のタスクの右側に表示される**完了ボタン（✅）**をクリックすると、作業時間の調整プロンプトが表示され、タスクが「完了 (✓)」になります。
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### 3. タスクの分類設定
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+-   タスクアイテム内の分類ドロップダウンから、設定したい分類を選択します。
+-   分類は設定画面で事前に管理できます。
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### 4. タスクの移動
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-# planner
+-   **今日のタスクから明日以降のタスクへ:**
+    -   「今日のタスク」の右側にある**「→」アイコンボタン**をクリックすると、タスクが「明日以降のタスク」へ移動します。
+    -   移動時、タスクが「作業中」だった場合は「中断中」に自動的に変更されます。
+-   **明日以降のタスクから今日のタスクへ:**
+    -   「明日以降のタスク」の左側にある**「←」アイコンボタン**をクリックすると、タスクが「今日のタスク」へ移動します。
+
+### 5. タスクの削除
+
+-   削除したいタスクアイテムを**右クリック**（またはスマートフォンで**長押し**）すると、コンテキストメニューが表示されます。
+-   メニューから「削除」を選択すると、タスクが削除されます。
+
+### 6. 日付を進める
+
+-   ヘッダーの日付の横にある「日付を進める」ボタンをクリックします。
+-   確認ダイアログが表示され、承認すると以下の処理が行われます。
+    -   前日の「今日のタスク」のうち完了したものが履歴に記録されます。
+    -   前日の「今日のタスク」のうち未完了のものが、新しい「今日のタスク」に繰り越されます。
+    -   「明日以降のタスク」はそのまま維持されます。
+    -   表示される日付が1日進みます。
+
+### 7. 設定画面の利用
+
+-   ヘッダーの右側にある**スパナアイコン（🔧）**をクリックすると、設定モーダルが開きます。
+-   **分類の管理:**
+    -   分類の追加、編集、削除が行えます。
+-   **データ管理:**
+    -   現在の全データをJSON形式でエクスポートしたり、JSONデータをインポートしてアプリケーションの状態を復元したりできます。
+
+### 8. テーマ切り替え
+
+-   ヘッダーの右側にある**月アイコン（🌙）**または**太陽アイコン（☀️）**をクリックすると、ライトモードとダークモードが切り替わります。
+
+## 開発環境のセットアップ
+
+1.  リポジトリをクローンします。
+2.  プロジェクトのルートディレクトリで依存関係をインストールします。
+    ```bash
+    npm install
+    ```
+3.  開発サーバーを起動します。
+    ```bash
+    npm run dev
+    ```
+    ブラウザで `http://localhost:5173/` (またはターミナルに表示されるURL) にアクセスしてください。
+4.  コードのフォーマットとリンティングを実行します。
+    ```bash
+    npm run format
+    npm run lint
+    ```
+
+## デプロイ
+
+このアプリケーションは静的ファイルとしてデプロイ可能です。
+
+1.  以下のコマンドで本番用の静的ファイルをビルドします。
+    ```bash
+    npm run build
+    ```
+2.  プロジェクトのルートディレクトリに生成される `dist` フォルダ内のすべてのファイルを、お使いのWebサーバーの公開ディレクトリにアップロードしてください。
+
+---
