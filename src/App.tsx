@@ -13,11 +13,11 @@ function App() {
       <main className="main-content">
         <section className="task-section">
           <h2>今日のタスク</h2>
-          <TaskList tasks={state.tasks.today} listType="today" />
+          <TaskList listType="today" />
         </section>
         <section className="task-section">
           <h2>明日以降のタスク</h2>
-          <TaskList tasks={state.tasks.tomorrow} listType="tomorrow" />
+          <TaskList listType="tomorrow" />
         </section>
       </main>
       <SettingsModal />

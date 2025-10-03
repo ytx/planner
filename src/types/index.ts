@@ -11,10 +11,11 @@ export type Task = {
   createdAt: number; // Unix timestamp
 };
 
-export interface Category {
+export type Category = {
   id: string;
   name: string;
-}
+  color: string; // Add color property to Category
+};
 
 export type AppData = {
   settings: {
@@ -22,6 +23,7 @@ export type AppData = {
     isSettingsModalOpen: boolean;
     workTimeAdjustingTaskId: string | null;
     workTimeAdjustingListType: 'today' | 'tomorrow' | null;
+    activeCategoryFilter: string | null; // Add activeCategoryFilter
     currentDate: string; // YYYY-MM-DD format
     categories: Category[];
   };

@@ -2,8 +2,9 @@ import { useState } from 'react';
 import CategoryManager from './CategoryManager';
 import DataManager from './DataManager';
 import AboutTab from './AboutTab';
+import HistoryViewer from './HistoryViewer'; // Import HistoryViewer
 
-type Tab = 'categories' | 'data' | 'about';
+type Tab = 'categories' | 'data' | 'about' | 'history'; // Add 'history' tab
 
 const SettingsTabs = () => {
   const [activeTab, setActiveTab] = useState<Tab>('categories');
@@ -16,6 +17,8 @@ const SettingsTabs = () => {
         return <DataManager />;
       case 'about':
         return <AboutTab />;
+      case 'history': // Render HistoryViewer for 'history' tab
+        return <HistoryViewer />;
       default:
         return null;
     }
@@ -35,6 +38,12 @@ const SettingsTabs = () => {
           onClick={() => setActiveTab('data')}
         >
           データ管理
+        </button>
+        <button
+          className={activeTab === 'history' ? 'active' : ''}
+          onClick={() => setActiveTab('history')}
+        >
+          履歴
         </button>
         <button
           className={activeTab === 'about' ? 'active' : ''}

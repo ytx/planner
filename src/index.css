@@ -38,7 +38,7 @@ body {
   --color-primary: #58a6ff;
   --color-danger-text: #ff7b72;
   --status-todo-color: #ff7b72;
-  --status-in-progress-color: #58a6ff;
+  --status-in-in-progress-color: #58a6ff;
   --status-paused-color: #ff7b72;
   --status-done-color: #28a745;
 }
@@ -63,12 +63,14 @@ body {
   margin: 0;
   font-size: 1.5rem;
   color: var(--color-text); /* 明示的に色を指定 */
+  margin-right: 1rem; /* CategoryFilterとの間にスペース */
 }
 
 .header-controls {
   display: flex;
   align-items: center;
   gap: 1rem;
+  margin-left: auto; /* 右寄せ */
 }
 
 .header-controls span {
@@ -353,6 +355,7 @@ button:hover {
 .category-add-form {
   display: flex;
   gap: 0.5rem;
+  flex-wrap: wrap; /* 折り返し */
 }
 
 .category-add-form input {
@@ -362,6 +365,32 @@ button:hover {
   border: 1px solid var(--color-border);
   background-color: var(--color-bg);
   color: var(--color-text);
+}
+
+.color-palette {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 10px;
+  width: 100%; /* 親要素の幅に合わせる */
+}
+
+.color-box {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.2s;
+}
+
+.color-box:hover {
+  border-color: var(--color-primary);
+}
+
+.color-box.selected {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-primary);
 }
 
 .category-list {

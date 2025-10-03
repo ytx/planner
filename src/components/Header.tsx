@@ -1,6 +1,7 @@
 import { useAppContext } from '../contexts/AppContext';
 import ThemeToggle from './ThemeToggle';
 import SettingsIcon from './icons/SettingsIcon';
+import CategoryFilter from './CategoryFilter'; // Import CategoryFilter
 
 const Header = () => {
   const { state, dispatch } = useAppContext();
@@ -18,6 +19,7 @@ const Header = () => {
   return (
     <header className="app-header">
       <h1>Planner</h1>
+      <CategoryFilter /> {/* Place CategoryFilter here */}
       <div className="header-controls">
         <span>{state.settings.currentDate}</span>
         <button onClick={advanceDate}>日付を進める</button>

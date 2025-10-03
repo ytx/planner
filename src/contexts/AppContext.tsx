@@ -23,7 +23,8 @@ type Action =
   | { type: 'MOVE_TASK_TO_TODAY'; payload: { taskId: string } }
   | { type: 'MOVE_TASK_TO_TOMORROW'; payload: { taskId: string } }
   | { type: 'OPEN_WORK_TIME_ADJUSTMENT'; payload: { taskId: string; initialWorkTime: number; listType: 'today' | 'tomorrow' } }
-  | { type: 'CLOSE_WORK_TIME_ADJUSTMENT' };
+  | { type: 'CLOSE_WORK_TIME_ADJUSTMENT' }
+  | { type: 'SET_CATEGORY_FILTER'; payload: string | null };
 
 // --- App Reducer ---
 const appReducer = (state: AppData, action: Action): AppData => {
@@ -68,7 +69,7 @@ const appReducer = (state: AppData, action: Action): AppData => {
         ...state,
         settings: {
           ...state.settings,
-          categories: [...state.settings.categories, action.payload],
+          categories: [...state.settings.categories, { ...action.payload, color: action.payload.color || '#CCCCCC' }], // デフォルト色を設定
         },
       };
     case 'UPDATE_CATEGORY':
@@ -77,7 +78,7 @@ const appReducer = (state: AppData, action: Action): AppData => {
         settings: {
           ...state.settings,
           categories: state.settings.categories.map((cat) =>
-            cat.id === action.payload.id ? action.payload : cat,
+            cat.id === action.payload.id ? { ...action.payload, color: action.payload.color || '#CCCCCC' } : cat,
           ),
         },
       };
@@ -137,41 +138,6 @@ const appReducer = (state: AppData, action: Action): AppData => {
     }
     case 'IMPORT_DATA':
       return action.payload;
-    case 'MOVE_TASK_TO_TODAY': {
-      const taskToMove = state.tasks.tomorrow.find(t => t.id === action.payload.taskId);
-      if (!taskToMove) return state;
-
-      return {
-        ...state,
-        tasks: {
-          today: [...state.tasks.today, { ...taskToMove }], // ステータスはそのまま保持
-          tomorrow: state.tasks.tomorrow.filter(t => t.id !== action.payload.taskId),
-        },
-      };
-    }
-    case 'MOVE_TASK_TO_TOMORROW': {
-      const taskToMove = state.tasks.today.find(t => t.id === action.payload.taskId);
-      if (!taskToMove) return state;
-
-      let updatedTask = { ...taskToMove };
-      if (updatedTask.status === 'in-progress') {
-        // 作業中であれば中断にする
-        const now = Date.now();
-        if (updatedTask.startTime) {
-          const segmentDuration = Math.floor((now - updatedTask.startTime) / (1000 * 60));
-          updatedTask.workTime = (updatedTask.workTime || 0) + segmentDuration;
-        }
-        updatedTask = { ...updatedTask, status: 'paused', startTime: undefined, endTime: now };
-      }
-
-      return {
-        ...state,
-        tasks: {
-          today: state.tasks.today.filter(t => t.id !== action.payload.taskId),
-          tomorrow: [...state.tasks.tomorrow, updatedTask],
-        },
-      };
-    }
     case 'OPEN_SETTINGS_MODAL':
       return { ...state, settings: { ...state.settings, isSettingsModalOpen: true } };
     case 'CLOSE_SETTINGS_MODAL':
@@ -180,10 +146,14 @@ const appReducer = (state: AppData, action: Action): AppData => {
       return { ...state, settings: { ...state.settings, workTimeAdjustingTaskId: action.payload.taskId, workTimeAdjustingListType: action.payload.listType } };
     case 'CLOSE_WORK_TIME_ADJUSTMENT':
       return { ...state, settings: { ...state.settings, workTimeAdjustingTaskId: null, workTimeAdjustingListType: null } };
+    case 'SET_CATEGORY_FILTER':
+      return { ...state, settings: { ...state.settings, activeCategoryFilter: action.payload } };
     default:
       return state as AppData;
   }
 };
+
+const getTodayString = () => new Date().toISOString().slice(0, 10);
 
 // --- Initial State ---
 const getInitialState = (): AppData => {
@@ -199,8 +169,6 @@ const getInitialState = (): AppData => {
       console.error('Error parsing localStorage data, resetting to default:', e);
     }
   }
-  const getTodayString = () => new Date().toISOString().slice(0, 10);
-
   // Return a default structure if no valid data is found.
   return {
     settings: {
@@ -208,6 +176,7 @@ const getInitialState = (): AppData => {
       isSettingsModalOpen: false,
       workTimeAdjustingTaskId: null,
       workTimeAdjustingListType: null,
+      activeCategoryFilter: null, // Initialize activeCategoryFilter
       currentDate: getTodayString(),
       categories: [],
     },

@@ -77,10 +77,12 @@
         -   `Task`インターフェースに`listType`プロパティを追加し、`WorkTimeAdjustmentModal`での`UPDATE_TASK`ディスパッチ時に`listType`を正しく渡すように修正。
         -   `ReactNode`と`Dispatch`の`import`を`import type`に修正。
         -   `appReducer`の`TS2366`エラーを、`default`ケースに`as AppData`の型アサーションを追加することで解消。
+        -   `TaskList.tsx`で`Task`型が未使用と判断されるエラーを修正（`import type { Task }`を削除）。
 
 ## 4. デプロイに関する対応
 
 -   Viteの設定ファイル（`vite.config.ts`）に`base: './'`を追加し、生成されるアセットのパスを相対パスに変更。これにより、サブディレクトリへのデプロイ時のアセット読み込みエラーを解消。
 -   QRコード画像（`bmc_qr.png`）は`public`ディレクトリに配置するよう指示。
+-   `bmc_qr.png`のパスがビルド後に正しく解決されるよう、`AboutTab.tsx`で`import.meta.env.BASE_URL`を使用するように修正。
 
 ---

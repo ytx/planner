@@ -115,8 +115,16 @@ const TaskItem = ({ task, listType }: TaskItemProps) => {
     };
   }, []);
 
+  const taskBackgroundColor = task.categoryId
+    ? categories.find(cat => cat.id === task.categoryId)?.color + '33' // 33 for 20% opacity
+    : undefined;
+
   return (
-    <div className={`task-item status-${task.status}`} onContextMenu={handleContextMenu}>
+    <div
+      className={`task-item status-${task.status}`}
+      onContextMenu={handleContextMenu}
+      style={{ backgroundColor: taskBackgroundColor }}
+    >
       {listType === 'tomorrow' && (
         <button onClick={handleMoveToToday} className="move-to-today-btn" title="今日のタスクへ移動">
           ←
