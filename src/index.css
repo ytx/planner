@@ -209,6 +209,16 @@ body {
   color: var(--color-text); /* 明示的に色を指定 */
 }
 
+.task-title-input {
+  flex-grow: 1;
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-size: 1em;
+}
+
 .task-category-select {
   padding: 0.6em 1em;
   border-radius: 8px;

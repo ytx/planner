@@ -11,7 +11,20 @@ const TaskItem = ({ task, listType }: TaskItemProps) => {
   const { state, dispatch } = useAppContext();
   const { categories } = state.settings;
   const [showContextMenu, setShowContextMenu] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedTitle, setEditedTitle] = useState(task.title);
   const contextMenuRef = useRef<HTMLDivElement>(null);
+  const titleInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setEditedTitle(task.title);
+  }, [task.title]);
+
+  useEffect(() => {
+    if (isEditing && titleInputRef.current) {
+      titleInputRef.current.focus();
+    }
+  }, [isEditing]);
 
   const getStatusIcon = (status: Task['status']) => {
     switch (status) {
@@ -76,6 +89,32 @@ const TaskItem = ({ task, listType }: TaskItemProps) => {
     dispatch({ type: 'UPDATE_TASK', payload: { updatedTask, list: listType } });
   };
 
+  const handleEdit = () => {
+    setIsEditing(true);
+    setShowContextMenu(false);
+  };
+
+  const handleSaveEdit = () => {
+    if (editedTitle.trim() !== task.title) {
+      const updatedTask = { ...task, title: editedTitle.trim() };
+      dispatch({ type: 'UPDATE_TASK', payload: { updatedTask, list: listType } });
+    }
+    setIsEditing(false);
+  };
+
+  const handleCancelEdit = () => {
+    setEditedTitle(task.title);
+    setIsEditing(false);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSaveEdit();
+    } else if (e.key === 'Escape') {
+      handleCancelEdit();
+    }
+  };
+
   const handleDelete = () => {
     if (window.confirm(`タスク「${task.title}」を削除しますか？`)) {
       dispatch({ type: 'DELETE_TASK', payload: { taskId: task.id, list: listType } });
@@ -84,13 +123,11 @@ const TaskItem = ({ task, listType }: TaskItemProps) => {
   };
 
   const handleMoveToToday = () => {
-    console.log('Move to Today clicked for task:', task.id); // Diagnostic log
     dispatch({ type: 'MOVE_TASK_TO_TODAY', payload: { taskId: task.id } });
     setShowContextMenu(false);
   };
 
   const handleMoveToTomorrow = () => {
-    console.log('Move to Tomorrow clicked for task:', task.id); // Diagnostic log
     dispatch({ type: 'MOVE_TASK_TO_TOMORROW', payload: { taskId: task.id } });
     setShowContextMenu(false);
   };
@@ -139,7 +176,19 @@ const TaskItem = ({ task, listType }: TaskItemProps) => {
         </button>
       )}
 
-      <span className="task-title">{task.title}</span>
+      {isEditing ? (
+        <input
+          ref={titleInputRef}
+          type="text"
+          value={editedTitle}
+          onChange={(e) => setEditedTitle(e.target.value)}
+          onBlur={handleSaveEdit}
+          onKeyDown={handleKeyDown}
+          className="task-title-input"
+        />
+      ) : (
+        <span className="task-title" onDoubleClick={listType === 'today' ? handleEdit : undefined}>{task.title}</span>
+      )}
 
       {listType === 'today' && task.status === 'in-progress' && (
         <button onClick={handleComplete} className="complete-btn" title="完了">
@@ -164,6 +213,7 @@ const TaskItem = ({ task, listType }: TaskItemProps) => {
 
       {showContextMenu && (
         <div ref={contextMenuRef} className="context-menu">
+          <button onClick={handleEdit}>編集</button>
           <button onClick={handleDelete}>削除</button>
         </div>
       )}
