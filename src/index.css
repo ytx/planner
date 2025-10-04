@@ -38,7 +38,7 @@ body {
   --color-primary: #58a6ff;
   --color-danger-text: #ff7b72;
   --status-todo-color: #ff7b72;
-  --status-in-in-progress-color: #58a6ff;
+  --status-in-progress-color: #58a6ff;
   --status-paused-color: #ff7b72;
   --status-done-color: #28a745;
 }
@@ -234,7 +234,7 @@ body {
   color: white;
   border: none;
   flex-shrink: 0;
-  order: -1; /* 左端に配置 */
+  /* order: -1; /* 左端に配置 */ /* 削除 */
 }
 
 .move-to-today-btn:hover {
@@ -252,7 +252,7 @@ body {
   color: white;
   border: none;
   flex-shrink: 0;
-  order: 1; /* 右端に配置 */
+  /* order: 1; /* 右端に配置 */ /* 削除 */
 }
 
 .move-to-tomorrow-btn:hover {

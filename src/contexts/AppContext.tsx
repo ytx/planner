@@ -148,6 +148,46 @@ const appReducer = (state: AppData, action: Action): AppData => {
       return { ...state, settings: { ...state.settings, workTimeAdjustingTaskId: null, workTimeAdjustingListType: null } };
     case 'SET_CATEGORY_FILTER':
       return { ...state, settings: { ...state.settings, activeCategoryFilter: action.payload } };
+    case 'MOVE_TASK_TO_TODAY': {
+      const taskToMove = state.tasks.tomorrow.find(t => t.id === action.payload.taskId);
+      if (!taskToMove) {
+        return state;
+      }
+
+      const newState = {
+        ...state,
+        tasks: {
+          today: [...state.tasks.today, { ...taskToMove }],
+          tomorrow: state.tasks.tomorrow.filter(t => t.id !== action.payload.taskId),
+        },
+      };
+      return newState;
+    }
+    case 'MOVE_TASK_TO_TOMORROW': {
+      const taskToMove = state.tasks.today.find(t => t.id === action.payload.taskId);
+      if (!taskToMove) {
+        return state;
+      }
+
+      let updatedTask = { ...taskToMove };
+      if (updatedTask.status === 'in-progress') {
+        const now = Date.now();
+        if (updatedTask.startTime) {
+          const segmentDuration = Math.floor((now - updatedTask.startTime) / (1000 * 60));
+          updatedTask.workTime = (updatedTask.workTime || 0) + segmentDuration;
+        }
+        updatedTask = { ...updatedTask, status: 'paused', startTime: undefined, endTime: now };
+      }
+
+      const newState = {
+        ...state,
+        tasks: {
+          today: state.tasks.today.filter(t => t.id !== action.payload.taskId),
+          tomorrow: [...state.tasks.tomorrow, updatedTask],
+        },
+      };
+      return newState;
+    }
     default:
       return state as AppData;
   }

@@ -84,11 +84,13 @@ const TaskItem = ({ task, listType }: TaskItemProps) => {
   };
 
   const handleMoveToToday = () => {
+    console.log('Move to Today clicked for task:', task.id); // Diagnostic log
     dispatch({ type: 'MOVE_TASK_TO_TODAY', payload: { taskId: task.id } });
     setShowContextMenu(false);
   };
 
   const handleMoveToTomorrow = () => {
+    console.log('Move to Tomorrow clicked for task:', task.id); // Diagnostic log
     dispatch({ type: 'MOVE_TASK_TO_TOMORROW', payload: { taskId: task.id } });
     setShowContextMenu(false);
   };
